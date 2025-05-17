@@ -100,6 +100,146 @@
             padding: 15px;
             margin-bottom: 15px;
         }
+        /* Estilos para el modal de producto */
+        .product-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1050;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .product-modal-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            max-width: 900px;
+            margin: 30px auto;
+            position: relative;
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1;
+        }
+        .product-gallery {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .main-product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            cursor: pointer;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 15px;
+        }
+        .gallery-nav button {
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .gallery-nav button:hover {
+            background-color: rgba(0,0,0,0.7);
+        }
+        .thumbnails-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 5px;
+        }
+        .thumbnail:hover, .thumbnail.active {
+            border-color: #0d6efd;
+        }
+        .product-details {
+            margin-top: 20px;
+        }
+        .download-pdf {
+            margin-top: 20px;
+        }
+        /* Modal de imagen grande */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1060;
+            text-align: center;
+        }
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .image-modal-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+        }
+        .image-modal-nav button {
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .image-modal-nav button:hover {
+            background-color: rgba(255,255,255,0.5);
+        }
+        .close-image-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -149,6 +289,59 @@
         </div>
     </section>
 
+    <!-- Modal de producto -->
+    <div id="productModal" class="product-modal">
+        <div class="product-modal-content">
+            <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="product-gallery">
+                        <img id="modalMainImage" src="" class="main-product-image" alt="Imagen principal del producto" onclick="openImageModal(this.src)">
+                        <div class="gallery-nav">
+                            <button onclick="navigateGallery(-1)"><i class="bi bi-chevron-left"></i></button>
+                            <button onclick="navigateGallery(1)"><i class="bi bi-chevron-right"></i></button>
+                        </div>
+                        <div class="thumbnails-container" id="thumbnailsContainer"></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h2 id="modalProductName"></h2>
+                    <p class="text-success fs-4 fw-bold" id="modalProductPrice"></p>
+                    <p class="text-muted" id="modalProductDescription"></p>
+                    
+                    <div class="quantity-controls mb-4">
+                        <button class="btn btn-outline-secondary" onclick="adjustModalQuantity(-1)">-</button>
+                        <span id="modalQuantity" class="px-3 fs-5">1</span>
+                        <button class="btn btn-outline-secondary" onclick="adjustModalQuantity(1)">+</button>
+                    </div>
+                    
+                    <button class="btn btn-dark w-100 mb-3" id="modalAddToCartBtn">
+                        <i class="bi bi-cart-plus"></i> Añadir al carrito
+                    </button>
+                    
+                    <div class="download-pdf">
+                        <button class="btn btn-outline-primary w-100" onclick="generateProductPDF(currentProduct.id)">
+                            <i class="bi bi-file-earmark-pdf"></i> Descargar ficha técnica
+                        </button>
+                    </div>
+                    
+                    <div class="product-details mt-4" id="modalProductDetails"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de imagen grande -->
+    <div id="imageModal" class="image-modal">
+        <span class="close-image-modal" onclick="closeImageModal()">&times;</span>
+        <img id="expandedImage" class="image-modal-content" src="" alt="Imagen ampliada">
+        <div class="image-modal-nav">
+            <button onclick="navigateImageModal(-1)"><i class="bi bi-chevron-left"></i></button>
+            <button onclick="navigateImageModal(1)"><i class="bi bi-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <!-- Modal de pedido -->
     <div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -288,6 +481,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
     <script>
         // Configuración
@@ -296,15 +490,44 @@
         const CLOUDFLARE_WORKER = "https://fz1.fz1-27c.workers.dev/";
         const DELIVERY_FEE = 5000;
 
-        // Datos de productos
+        // Datos de productos mejorados con múltiples imágenes y descripción detallada
         const products = [
             {
                 id: 1,
-                name: "1",
+                name: "Producto Premium",
                 price: 120000,
                 inventory: 15,
-                image: "1/1.jpg",
+                images: [
+                    "1/c.jpg",
+                    "1/c.jpg",
+                    "1/c.jpg",
+                    "1/c.jpg"
+                ],
                 description: "Producto de alta calidad con garantía de 1 año.",
+                detailedDescription: `
+                    <h4>Características principales:</h4>
+                    <ul>
+                        <li>Materiales de primera calidad</li>
+                        <li>Garantía de 12 meses</li>
+                        <li>Diseño ergonómico</li>
+                        <li>Resistente al agua</li>
+                        <li>Incluye accesorios</li>
+                    </ul>
+                    <h4>Especificaciones técnicas:</h4>
+                    <ul>
+                        <li>Peso: 1.2 kg</li>
+                        <li>Dimensiones: 20x15x10 cm</li>
+                        <li>Color: Negro mate</li>
+                        <li>Voltaje: 110V-220V</li>
+                    </ul>
+                    <h4>Incluye:</h4>
+                    <ul>
+                        <li>Manual de usuario</li>
+                        <li>Certificado de garantía</li>
+                        <li>Cable de alimentación</li>
+                        <li>Estuche protector</li>
+                    </ul>
+                `,
                 onSale: true
             },
             {
@@ -312,8 +535,32 @@
                 name: "Producto Estándar",
                 price: 80000,
                 inventory: 30,
-                image: "https://via.placeholder.com/300",
+                images: [
+                    "https://via.placeholder.com/600x400/6c757d/ffffff?text=Producto+Estándar+1",
+                    "https://via.placeholder.com/600x400/17a2b8/ffffff?text=Producto+Estándar+2",
+                    "https://via.placeholder.com/600x400/6f42c1/ffffff?text=Producto+Estándar+3"
+                ],
                 description: "Producto confiable para uso diario.",
+                detailedDescription: `
+                    <h4>Características principales:</h4>
+                    <ul>
+                        <li>Diseño funcional</li>
+                        <li>Garantía de 6 meses</li>
+                        <li>Materiales resistentes</li>
+                        <li>Fácil mantenimiento</li>
+                    </ul>
+                    <h4>Especificaciones técnicas:</h4>
+                    <ul>
+                        <li>Peso: 0.8 kg</li>
+                        <li>Dimensiones: 18x12x8 cm</li>
+                        <li>Color: Gris</li>
+                    </ul>
+                    <h4>Incluye:</h4>
+                    <ul>
+                        <li>Manual básico</li>
+                        <li>Garantía limitada</li>
+                    </ul>
+                `,
                 onSale: false
             },
             {
@@ -321,8 +568,32 @@
                 name: "Producto Económico",
                 price: 50000,
                 inventory: 50,
-                image: "https://via.placeholder.com/300",
+                images: [
+                    "https://via.placeholder.com/600x400/ffc107/ffffff?text=Producto+Económico+1",
+                    "https://via.placeholder.com/600x400/6610f2/ffffff?text=Producto+Económico+2",
+                    "https://via.placeholder.com/600x400/e83e8c/ffffff?text=Producto+Económico+3",
+                    "https://via.placeholder.com/600x400/fb8c00/ffffff?text=Producto+Económico+4"
+                ],
                 description: "Solución económica sin perder calidad.",
+                detailedDescription: `
+                    <h4>Características principales:</h4>
+                    <ul>
+                        <li>Precio accesible</li>
+                        <li>Garantía de 3 meses</li>
+                        <li>Funcionalidad básica</li>
+                        <li>Ligero y portable</li>
+                    </ul>
+                    <h4>Especificaciones técnicas:</h4>
+                    <ul>
+                        <li>Peso: 0.5 kg</li>
+                        <li>Dimensiones: 15x10x5 cm</li>
+                        <li>Color: Blanco</li>
+                    </ul>
+                    <h4>Incluye:</h4>
+                    <ul>
+                        <li>Manual básico</li>
+                    </ul>
+                `,
                 onSale: true
             },
             {
@@ -330,8 +601,38 @@
                 name: "Producto Deluxe",
                 price: 150000,
                 inventory: 10,
-                image: "https://via.placeholder.com/300",
+                images: [
+                    "https://via.placeholder.com/600x400/343a40/ffffff?text=Producto+Deluxe+1",
+                    "https://via.placeholder.com/600x400/20c997/ffffff?text=Producto+Deluxe+2",
+                    "https://via.placeholder.com/600x400/fd7e14/ffffff?text=Producto+Deluxe+3"
+                ],
                 description: "Edición especial con características exclusivas.",
+                detailedDescription: `
+                    <h4>Características principales:</h4>
+                    <ul>
+                        <li>Edición limitada</li>
+                        <li>Garantía extendida de 2 años</li>
+                        <li>Materiales premium</li>
+                        <li>Tecnología avanzada</li>
+                        <li>Diseño exclusivo</li>
+                    </ul>
+                    <h4>Especificaciones técnicas:</h4>
+                    <ul>
+                        <li>Peso: 1.5 kg</li>
+                        <li>Dimensiones: 22x18x12 cm</li>
+                        <li>Color: Oro/Negro</li>
+                        <li>Voltaje: 100V-240V</li>
+                        <li>Certificación IP68</li>
+                    </ul>
+                    <h4>Incluye:</h4>
+                    <ul>
+                        <li>Manual premium</li>
+                        <li>Certificado de autenticidad</li>
+                        <li>Estuche de lujo</li>
+                        <li>Accesorios exclusivos</li>
+                        <li>Soporte prioritario</li>
+                    </ul>
+                `,
                 onSale: false
             }
         ];
@@ -339,6 +640,8 @@
         // Variables globales
         let cart = {};
         let currentOrderId = "";
+        let currentProduct = null;
+        let currentImageIndex = 0;
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
@@ -379,9 +682,9 @@
                 <div class="col-md-4 col-lg-3">
                     <div class="card product-card h-100">
                         ${product.onSale ? '<span class="badge bg-danger badge-sale">SALE</span>' : ''}
-                        <img src="${product.image}" class="card-img-top p-3" alt="${product.name}">
+                        <img src="${product.images[0]}" class="card-img-top p-3" alt="${product.name}">
                         <div class="card-body">
-                            <h5 class="card-title">${product.name}</h5>
+                            <h5 class="card-title" onclick="showProductModal(${product.id})" style="cursor: pointer;">${product.name}</h5>
                             <p class="card-text text-muted small">${product.description}</p>
                             <p class="fw-bold">$${product.price.toLocaleString()}</p>
                             <div class="quantity-controls">
@@ -399,6 +702,180 @@
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Mostrar modal de producto
+        function showProductModal(productId) {
+            currentProduct = products.find(p => p.id === productId);
+            if (!currentProduct) return;
+            
+            currentImageIndex = 0;
+            
+            // Actualizar contenido del modal
+            document.getElementById('modalProductName').textContent = currentProduct.name;
+            document.getElementById('modalProductPrice').textContent = `$${currentProduct.price.toLocaleString()}`;
+            document.getElementById('modalProductDescription').textContent = currentProduct.description;
+            document.getElementById('modalProductDetails').innerHTML = currentProduct.detailedDescription;
+            document.getElementById('modalQuantity').textContent = cart[productId] || 1;
+            
+            // Configurar imágenes
+            updateProductGallery();
+            
+            // Configurar botón de añadir al carrito
+            document.getElementById('modalAddToCartBtn').onclick = function() {
+                addToCartFromModal();
+            };
+            
+            // Mostrar modal
+            document.getElementById('productModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Cerrar modal de producto
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Actualizar galería de imágenes del producto
+        function updateProductGallery() {
+            if (!currentProduct) return;
+            
+            const thumbnailsContainer = document.getElementById('thumbnailsContainer');
+            thumbnailsContainer.innerHTML = '';
+            
+            currentProduct.images.forEach((img, index) => {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = img;
+                thumbnail.className = `thumbnail ${index === currentImageIndex ? 'active' : ''}`;
+                thumbnail.alt = `Miniatura ${index + 1}`;
+                thumbnail.onclick = () => {
+                    currentImageIndex = index;
+                    updateMainImage();
+                };
+                thumbnailsContainer.appendChild(thumbnail);
+            });
+            
+            updateMainImage();
+        }
+
+        // Actualizar imagen principal en el modal
+        function updateMainImage() {
+            if (!currentProduct || currentImageIndex < 0 || currentImageIndex >= currentProduct.images.length) return;
+            
+            document.getElementById('modalMainImage').src = currentProduct.images[currentImageIndex];
+            
+            // Actualizar miniaturas activas
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === currentImageIndex);
+            });
+        }
+
+        // Navegar por la galería
+        function navigateGallery(direction) {
+            if (!currentProduct) return;
+            
+            currentImageIndex += direction;
+            
+            if (currentImageIndex < 0) {
+                currentImageIndex = currentProduct.images.length - 1;
+            } else if (currentImageIndex >= currentProduct.images.length) {
+                currentImageIndex = 0;
+            }
+            
+            updateMainImage();
+        }
+
+        // Ajustar cantidad desde el modal
+        function adjustModalQuantity(change) {
+            if (!currentProduct) return;
+            
+            let newQuantity = parseInt(document.getElementById('modalQuantity').textContent) + change;
+            newQuantity = Math.max(1, Math.min(newQuantity, currentProduct.inventory));
+            document.getElementById('modalQuantity').textContent = newQuantity;
+        }
+
+        // Añadir al carrito desde el modal
+        function addToCartFromModal() {
+            if (!currentProduct) return;
+            
+            const quantity = parseInt(document.getElementById('modalQuantity').textContent);
+            
+            if ((cart[currentProduct.id] || 0) + quantity > currentProduct.inventory) {
+                alert('No hay suficiente inventario');
+                return;
+            }
+            
+            cart[currentProduct.id] = (cart[currentProduct.id] || 0) + quantity;
+            updateCartCounter();
+            document.getElementById(`quantity-${currentProduct.id}`).textContent = cart[currentProduct.id];
+            
+            // Cerrar modal después de añadir
+            closeProductModal();
+        }
+
+        // Abrir modal de imagen grande
+        function openImageModal(imageSrc) {
+            if (!currentProduct) return;
+            
+            document.getElementById('expandedImage').src = imageSrc;
+            document.getElementById('imageModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Cerrar modal de imagen grande
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Navegar por imágenes en el modal grande
+        function navigateImageModal(direction) {
+            if (!currentProduct) return;
+            
+            currentImageIndex += direction;
+            
+            if (currentImageIndex < 0) {
+                currentImageIndex = currentProduct.images.length - 1;
+            } else if (currentImageIndex >= currentProduct.images.length) {
+                currentImageIndex = 0;
+            }
+            
+            document.getElementById('expandedImage').src = currentProduct.images[currentImageIndex];
+        }
+
+        // Generar PDF del producto
+        function generateProductPDF(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Título
+            doc.setFontSize(20);
+            doc.text(`Ficha técnica: ${product.name}`, 105, 15, { align: 'center' });
+            
+            // Imagen principal (usamos la primera imagen)
+            doc.addImage(product.images[0], 'JPEG', 15, 25, 180, 100);
+            
+            // Información básica
+            doc.setFontSize(14);
+            doc.text(`Precio: $${product.price.toLocaleString()}`, 15, 140);
+            doc.text(`Disponibles: ${product.inventory} unidades`, 15, 150);
+            
+            // Descripción detallada (convertimos HTML a texto simple)
+            const descriptionText = product.detailedDescription
+                .replace(/<[^>]*>/g, '') // Eliminar etiquetas HTML
+                .replace(/\n\s+/g, '\n')  // Eliminar espacios múltiples
+                .trim();
+            
+            doc.setFontSize(12);
+            doc.text(descriptionText, 15, 160, { maxWidth: 180 });
+            
+            // Guardar PDF
+            doc.save(`Ficha_tecnica_${product.name.replace(/\s+/g, '_')}.pdf`);
         }
 
         // Funciones del carrito
