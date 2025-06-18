@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QRContraentrega Montebello Cali, Valle Del Cauca, Colombia</title>
+    <title>QRContraentrega - Hermanos Dreams SAS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -282,20 +282,14 @@
                     <li class="nav-item"><a class="nav-link" href="politicas.html">Rastrear</a></li>
                     <li class="nav-item"><a class="nav-link" href="politicas.html">Publicar</a></li>
                 </ul>
-                <div class="d-flex">
-                    <button class="btn btn-outline-dark position-relative" onclick="showOrderModal()">
-                        <i class="bi bi-cart-fill"></i>
-                        <span id="cartCounter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark">0</span>
-                    </button>
-                </div>
             </div>
         </div>
     </nav>
 
     <header class="hero-section">
         <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">@montebellocali</h1>
-            <p class="lead">Punto de venta 24 horas. Sector hora cero Montebello Cali, Valle Del Cauca, Colombia</p>
+            <h1 class="display-4 fw-bold mb-3">@hermanosdreams</h1>
+            <p class="lead">Punto de venta: Av 43 Oeste #3 - 4 Sector la ambulancia</p>
         </div>
     </header>
 
@@ -313,12 +307,6 @@
             <div class="row g-4" id="productsContainer"></div>
         </div>
     </section>
-
-    <!-- Botón de carrito fijo -->
-    <button class="btn btn-dark fixed-cart-btn position-relative" onclick="showOrderModal()">
-        <i class="bi bi-cart-fill"></i> Ver carrito
-        <span id="fixedCartCounter" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
-    </button>
 
     <!-- Modal de producto -->
     <div id="productModal" class="product-modal">
@@ -342,15 +330,17 @@
                     <p class="text-success fs-4 fw-bold" id="modalProductPrice"></p>
                     <p class="text-muted" id="modalProductDescription"></p>
                     
-                    <div class="quantity-controls mb-4">
-                        <button class="btn btn-outline-secondary" onclick="adjustModalQuantity(-1)">-</button>
-                        <span id="modalQuantity" class="px-3 fs-5">1</span>
-                        <button class="btn btn-outline-secondary" onclick="adjustModalQuantity(1)">+</button>
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="tel:+573215296581" class="btn btn-primary">
+                            <i class="bi bi-telephone"></i> Llamar
+                        </a>
+                        <a href="https://wa.me/573215296581" class="btn btn-success">
+                            <i class="bi bi-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://co.qrcontraentrega.com/hermanosdreams" class="btn btn-dark">
+                            <i class="bi bi-cart"></i> Comprar en línea
+                        </a>
                     </div>
-                    
-                    <button class="btn btn-dark w-100 mb-3" id="modalAddToCartBtn">
-                        <i class="bi bi-cart-plus"></i> Añadir al carrito
-                    </button>
                     
                     <div class="download-pdf">
                         <button class="btn btn-outline-primary w-100" onclick="generateProductPDF(currentProduct.id)">
@@ -374,134 +364,9 @@
         </div>
     </div>
 
-    <!-- Modal de pedido -->
-    <div class="modal fade" id="orderModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tu Pedido</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="orderSummary"></div>
-                    
-                    <div id="checkoutFormSection">
-                        <div class="checkout-section">
-                            <h5>Método de Entrega</h5>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="deliveryMethod" id="pickup" value="pickup" checked>
-                                <label class="form-check-label" for="pickup">Recoger en tienda</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="deliveryMethod" id="delivery" value="delivery">
-                                <label class="form-check-label" for="delivery">Envío a domicilio (+$5,000)</label>
-                            </div>
-                            
-                            <form id="customerForm" class="mt-3" novalidate>
-                                <div class="mb-3">
-                                    <label for="customerName" class="form-label">Nombre completo*</label>
-                                    <input type="text" class="form-control" id="customerName" required minlength="3" pattern="[A-Za-z\s]+" title="El nombre solo debe contener letras y espacios">
-                                    <div class="invalid-feedback">Por favor ingresa un nombre válido (mínimo 3 caracteres, solo letras y espacios).</div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="customerPhone" class="form-label">Teléfono*</label>
-                                    <input type="tel" class="form-control" id="customerPhone" required pattern="[0-9]{10}" title="El teléfono debe tener 10 dígitos">
-                                    <div class="invalid-feedback">Por favor ingresa un número de teléfono válido (10 dígitos).</div>
-                                </div>
-                                <div class="mb-3" id="addressField" style="display: none;">
-                                    <label for="customerAddress" class="form-label">Dirección completa*</label>
-                                    <input type="text" class="form-control" id="customerAddress" minlength="10" title="La dirección debe tener al menos 10 caracteres">
-                                    <div class="invalid-feedback">Por favor ingresa una dirección válida (mínimo 10 caracteres).</div>
-                                </div>
-                                
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
-                                    <button type="button" class="btn btn-primary me-md-2" onclick="processPayment('COP')">
-                                        <i class="bi bi-cash-coin"></i> Pagar A Cuotas
-                                    </button>
-                                    <button type="button" class="btn btn-warning" onclick="processPayment('Bitcoin')">
-                                        <i class="bi bi-currency-bitcoin"></i> Pagar Al Recibir
-                                    </button>
-                                </div>
-                            </form>
-                            
-                            <div class="text-center mt-3">
-                                <div id="loadingSpinner" class="spinner-border text-primary loading-spinner" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                                <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div id="copPaymentSection" class="cop-details" style="display: none;">
-                        <h4><i class="bi bi-cash-coin"></i> Pago en Pesos Colombianos</h4>
-                        <p>✅ Total a pagar: <strong id="copTotalAmount"></strong></p>
-                        <p>📝 Número de pedido: <strong id="copOrderNumber"></strong></p>
-                        
-                        <div class="bank-method">
-                            <h5><i class="bi bi-bank"></i> Transferencia Bancolombia</h5>
-                            <p><strong>Cuenta:</strong> 1234567890</p>
-                            <p><strong>Titular:</strong> Nombre del Titular</p>
-                            <p><strong>Tipo:</strong> Ahorros</p>
-                        </div>
-                        
-                        <div class="bank-method">
-                            <h5><i class="bi bi-phone"></i> Nequi</h5>
-                            <p><strong>Número:</strong> 3123456789</p>
-                            <p><strong>Titular:</strong> Nombre del Titular</p>
-                        </div>
-                        
-                        <div class="bank-method">
-                            <h5><i class="bi bi-wallet"></i> DaviPlata</h5>
-                            <p><strong>Número:</strong> 3123456789</p>
-                            <p><strong>Titular:</strong> Nombre del Titular</p>
-                        </div>
-                        
-                        <div class="alert alert-info mt-3">
-                            <p>💰 Por favor envía el monto exacto</p>
-                            <p>📦 Envía el comprobante por WhatsApp al <strong>3123456789</strong> con tu número de pedido</p>
-                        </div>
-                        
-                        <div class="d-grid mt-3">
-                            <button class="btn btn-success" onclick="completeOrder()">
-                                <i class="bi bi-check-circle"></i> Confirmar pago
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="bitcoinPaymentSection" class="payment-instructions" style="display: none;">
-                        <h4><i class="bi bi-currency-bitcoin"></i> Pago con Bitcoin</h4>
-                        <p>✅ Total a pagar: <strong id="bitcoinTotalAmount"></strong></p>
-                        <p>🔗 Dirección Bitcoin: <strong>1CAW26tepzcozWR58tMmSq5Sx44RCBtLXL</strong></p>
-                        <p>📝 Número de pedido: <strong id="bitcoinOrderNumber"></strong></p>
-                        
-                        <div id="qrCode" class="mb-3"></div>
-                        
-                        <div class="alert alert-warning">
-                            <p>⚠️ El cliente asume las comisiones de red</p>
-                            <p>📌 Incluye el número de pedido en el memo de la transacción</p>
-                        </div>
-                        
-                        <div class="d-grid mt-3">
-                            <button class="btn btn-success" onclick="completeOrder()">
-                                <i class="bi bi-check-circle"></i> Confirmar pago
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
-                        <h5><i class="bi bi-check-circle-fill"></i> ¡Pedido confirmado!</h5>
-                        <p>Tu pedido <strong id="confirmedOrderNumber"></strong> ha sido recibido.</p>
-                        <p>Nos comunicaremos contigo para confirmar el pago.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <footer class="bg-dark text-white py-4 mt-5">
         <div class="container text-center">
-            <p class="mb-1">FZ2 - Contraentregaco FZ</p>
+            <p class="mb-1">QRContraentrega - Todos los derechos reservados.</p>
             <p class="mb-1" id="caliDateTime">Cali, Colombia: <span id="currentDateTime"></span></p>
             <p class="mb-0"><a href="politicas.html" class="footer-link">Políticas de la empresa</a></p>
         </div>
@@ -522,7 +387,7 @@
         const products = [
             {
                 id: 1,
-                name: "Producto Premium",
+                name: "Power Maker",
                 price: 120000,
                 inventory: 15,
                 images: [
@@ -560,7 +425,7 @@
             },
             {
                 id: 2,
-                name: "Producto Estándar",
+                name: "Homo Plus",
                 price: 80000,
                 inventory: 30,
                 images: [
@@ -666,8 +531,6 @@
         ];
 
         // Variables globales
-        let cart = {};
-        let currentOrderId = "";
         let currentProduct = null;
         let currentImageIndex = 0;
         let touchStartX = 0;
@@ -679,33 +542,9 @@
             updateDateTime();
             setInterval(updateDateTime, 1000);
             
-            document.querySelectorAll('input[name="deliveryMethod"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    document.getElementById('addressField').style.display = 
-                        this.value === 'delivery' ? 'block' : 'none';
-                    updateOrderSummary();
-                });
-            });
-
-            // Configurar el botón de carrito fijo
-            setupFixedCartButton();
-
             // Configurar el deslizamiento de imágenes
             setupImageSwipe();
         });
-
-        // Configurar el botón de carrito fijo
-        function setupFixedCartButton() {
-            const fixedCartBtn = document.querySelector('.fixed-cart-btn');
-            
-            // Mostrar siempre el botón
-            fixedCartBtn.style.display = 'flex';
-            
-            // Asegurarse de que esté visible al hacer scroll
-            window.addEventListener('scroll', function() {
-                fixedCartBtn.style.bottom = '20px';
-            });
-        }
 
         // Configurar el deslizamiento de imágenes
         function setupImageSwipe() {
@@ -762,17 +601,19 @@
                             <h5 class="card-title" onclick="showProductModal(${product.id})" style="cursor: pointer;">${product.name}</h5>
                             <p class="card-text text-muted small">${product.description}</p>
                             <p class="fw-bold">$${product.price.toLocaleString()}</p>
-                            <div class="quantity-controls">
-                                <button class="btn btn-sm btn-outline-secondary" onclick="adjustQuantity(${product.id}, -1)">-</button>
-                                <span id="quantity-${product.id}">${cart[product.id] || 0}</span>
-                                <button class="btn btn-sm btn-outline-secondary" onclick="adjustQuantity(${product.id}, 1)">+</button>
-                            </div>
-                            <span class="badge bg-secondary inventory-badge mt-2">Disponibles: ${product.inventory}</span>
                         </div>
                         <div class="card-footer bg-transparent">
-                            <button class="btn btn-sm btn-dark w-100" onclick="addToCart(${product.id})">
-                                Añadir al carrito
-                            </button>
+                            <div class="d-grid gap-2">
+                                <a href="tel:+573215296581" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-telephone"></i> Llamar
+                                </a>
+                                <a href="https://wa.me/573215296581" class="btn btn-sm btn-success">
+                                    <i class="bi bi-whatsapp"></i> WhatsApp
+                                </a>
+                                <a href="https://co.qrcontraentrega.com/montebellocali" class="btn btn-sm btn-dark">
+                                    <i class="bi bi-cart"></i> Comprar en línea
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -791,15 +632,9 @@
             document.getElementById('modalProductPrice').textContent = `$${currentProduct.price.toLocaleString()}`;
             document.getElementById('modalProductDescription').textContent = currentProduct.description;
             document.getElementById('modalProductDetails').innerHTML = currentProduct.detailedDescription;
-            document.getElementById('modalQuantity').textContent = cart[productId] || 1;
             
             // Configurar imágenes
             updateProductGallery();
-            
-            // Configurar botón de añadir al carrito
-            document.getElementById('modalAddToCartBtn').onclick = function() {
-                addToCartFromModal();
-            };
             
             // Mostrar modal
             document.getElementById('productModal').style.display = 'block';
@@ -862,34 +697,6 @@
             updateMainImage();
         }
 
-        // Ajustar cantidad desde el modal
-        function adjustModalQuantity(change) {
-            if (!currentProduct) return;
-            
-            let newQuantity = parseInt(document.getElementById('modalQuantity').textContent) + change;
-            newQuantity = Math.max(1, Math.min(newQuantity, currentProduct.inventory));
-            document.getElementById('modalQuantity').textContent = newQuantity;
-        }
-
-        // Añadir al carrito desde el modal
-        function addToCartFromModal() {
-            if (!currentProduct) return;
-            
-            const quantity = parseInt(document.getElementById('modalQuantity').textContent);
-            
-            if ((cart[currentProduct.id] || 0) + quantity > currentProduct.inventory) {
-                alert('No hay suficiente inventario');
-                return;
-            }
-            
-            cart[currentProduct.id] = (cart[currentProduct.id] || 0) + quantity;
-            updateCartCounter();
-            document.getElementById(`quantity-${currentProduct.id}`).textContent = cart[currentProduct.id];
-            
-            // Cerrar modal después de añadir
-            closeProductModal();
-        }
-
         // Abrir modal de imagen grande
         function openImageModal(imageSrc) {
             if (!currentProduct) return;
@@ -938,7 +745,6 @@
             // Información básica
             doc.setFontSize(14);
             doc.text(`Precio: $${product.price.toLocaleString()}`, 15, 140);
-            doc.text(`Disponibles: ${product.inventory} unidades`, 15, 150);
             
             // Descripción detallada (convertimos HTML a texto simple)
             const descriptionText = product.detailedDescription
@@ -947,111 +753,10 @@
                 .trim();
             
             doc.setFontSize(12);
-            doc.text(descriptionText, 15, 160, { maxWidth: 180 });
+            doc.text(descriptionText, 15, 150, { maxWidth: 180 });
             
             // Guardar PDF
             doc.save(`Ficha_tecnica_${product.name.replace(/\s+/g, '_')}.pdf`);
-        }
-
-        // Funciones del carrito
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product || (cart[productId] || 0) >= product.inventory) {
-                return alert('No hay suficiente inventario');
-            }
-            cart[productId] = (cart[productId] || 0) + 1;
-            updateCartCounter();
-            document.getElementById(`quantity-${productId}`).textContent = cart[productId];
-        }
-
-        function adjustQuantity(productId, change) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            const currentQuantity = cart[productId] || 0;
-            let newQuantity = currentQuantity + change;
-            
-            newQuantity = Math.max(0, Math.min(newQuantity, product.inventory));
-            
-            if (newQuantity === 0) {
-                delete cart[productId];
-            } else {
-                cart[productId] = newQuantity;
-            }
-            
-            document.getElementById(`quantity-${productId}`).textContent = cart[productId] || 0;
-            updateCartCounter();
-        }
-
-        function updateCartCounter() {
-            const count = Object.values(cart).reduce((sum, qty) => sum + qty, 0);
-            document.getElementById('cartCounter').textContent = count;
-            document.getElementById('fixedCartCounter').textContent = count;
-        }
-
-        // Mostrar modal de pedido
-        function showOrderModal() {
-            if (Object.keys(cart).length === 0) {
-                alert('Tu carrito está vacío');
-                return;
-            }
-            
-            const modal = new bootstrap.Modal(document.getElementById('orderModal'));
-            resetModal();
-            updateOrderSummary();
-            modal.show();
-        }
-
-        function resetModal() {
-            document.getElementById('checkoutFormSection').style.display = 'block';
-            document.getElementById('copPaymentSection').style.display = 'none';
-            document.getElementById('bitcoinPaymentSection').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('errorMessage').style.display = 'none';
-            document.getElementById('loadingSpinner').style.display = 'none';
-        }
-
-        // Actualizar resumen del pedido
-        function updateOrderSummary() {
-            let subtotal = 0;
-            let html = '<h5 class="mb-3">Resumen de tu pedido</h5>';
-            
-            Object.entries(cart).forEach(([productId, quantity]) => {
-                const product = products.find(p => p.id == productId);
-                if (product) {
-                    const productTotal = product.price * quantity;
-                    subtotal += productTotal;
-                    
-                    html += `
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>${product.name} x${quantity}</span>
-                            <span>$${productTotal.toLocaleString()}</span>
-                        </div>
-                    `;
-                }
-            });
-            
-            const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
-            const deliveryCost = deliveryMethod === 'delivery' ? DELIVERY_FEE : 0;
-            const total = subtotal + deliveryCost;
-            
-            html += `
-                <hr>
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Subtotal:</span>
-                    <span>$${subtotal.toLocaleString()}</span>
-                </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Envío:</span>
-                    <span>$${deliveryCost.toLocaleString()}</span>
-                </div>
-                <div class="d-flex justify-content-between fw-bold">
-                    <span>Total:</span>
-                    <span>$${total.toLocaleString()}</span>
-                </div>
-            `;
-            
-            document.getElementById('orderSummary').innerHTML = html;
         }
 
         // Buscador de productos
@@ -1062,192 +767,6 @@
                 p.description.toLowerCase().includes(term)
             );
             renderProducts(filtered.length > 0 ? filtered : products);
-        }
-
-        // Procesar pago
-        async function processPayment(paymentMethod) {
-            const form = document.getElementById('customerForm');
-            if (!form.checkValidity()) {
-                form.classList.add('was-validated');
-                return;
-            }
-
-            const deliveryMethod = document.querySelector('input[name="deliveryMethod"]:checked').value;
-            if (deliveryMethod === 'delivery' && !document.getElementById('customerAddress').value.trim()) {
-                alert('Por favor ingresa una dirección de envío válida');
-                return;
-            }
-
-            document.getElementById('loadingSpinner').style.display = 'block';
-            document.getElementById('errorMessage').style.display = 'none';
-
-            currentOrderId = 'ORD-' + Date.now().toString().slice(-8);
-
-            const subtotal = Object.entries(cart).reduce((sum, [productId, quantity]) => {
-                const product = products.find(p => p.id == productId);
-                return sum + (product ? product.price * quantity : 0);
-            }, 0);
-
-            const deliveryCost = deliveryMethod === 'delivery' ? DELIVERY_FEE : 0;
-            const total = subtotal + deliveryCost;
-
-            // Estructura detallada para el Worker
-            const customerDetails = {
-                name: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                address: deliveryMethod === 'delivery' ? document.getElementById('customerAddress').value : 'Recoger en tienda'
-            };
-
-            const itemsDetails = Object.entries(cart).map(([productId, quantity]) => {
-                const product = products.find(p => p.id == productId);
-                return {
-                    id: productId,
-                    name: product.name,
-                    quantity: quantity,
-                    price: product.price,
-                    subtotal: product.price * quantity
-                };
-            });
-
-            const orderSummary = {
-                subtotal: subtotal,
-                deliveryFee: deliveryCost,
-                total: total,
-                paymentMethod: paymentMethod,
-                orderId: currentOrderId
-            };
-
-            // Mantener el mensaje detallado para compatibilidad
-            const detailedMessage = `
-                Cliente:
-                Nombre: ${customerDetails.name}
-                Teléfono: ${customerDetails.phone}
-                Dirección: ${customerDetails.address}
-                
-                Items:
-                ${itemsDetails.map(item => `
-                Producto: ${item.name}
-                Cantidad: ${item.quantity}
-                Precio unitario: $${item.price.toLocaleString()}
-                Subtotal: $${item.subtotal.toLocaleString()}
-                `).join('\n')}
-                
-                Resumen del pedido:
-                Subtotal: $${subtotal.toLocaleString()}
-                Costo de envío: $${deliveryCost.toLocaleString()}
-                Total: $${total.toLocaleString()}
-                Método de pago: ${paymentMethod}
-                ID del pedido: ${currentOrderId}
-            `;
-
-            const orderData = {
-                _subject: `Nuevo pedido ${currentOrderId}`,
-                name: customerDetails.name,
-                phone: customerDetails.phone,
-                address: customerDetails.address,
-                paymentMethod: paymentMethod,
-                items: detailedMessage, // Mantener para compatibilidad
-                customerDetails: customerDetails, // Nuevo campo estructurado
-                itemsDetails: itemsDetails, // Nuevo campo estructurado
-                orderSummary: orderSummary, // Nuevo campo estructurado
-                itemsJson: JSON.stringify(itemsDetails), // Mantener para Formspree
-                subtotal: subtotal,
-                deliveryFee: deliveryCost,
-                total: total,
-                orderId: currentOrderId
-            };
-
-            try {
-                // Enviar a Cloudflare Worker
-                let workerSuccess = false;
-                try {
-                    const workerResponse = await fetch(CLOUDFLARE_WORKER, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(orderData)
-                    });
-                    if (workerResponse.ok) {
-                        workerSuccess = true;
-                    } else {
-                        console.error('Cloudflare Worker error:', workerResponse.status, await workerResponse.text());
-                    }
-                } catch (workerError) {
-                    console.error('Cloudflare Worker failed:', workerError);
-                }
-
-                // Enviar a Formspree
-                let formspreeSuccess = false;
-                try {
-                    const formspreeResponse = await fetch(FORMSPREE_ENDPOINT, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(orderData)
-                    });
-                    if (formspreeResponse.ok) {
-                        formspreeSuccess = true;
-                    } else {
-                        console.error('Formspree error:', formspreeResponse.status, await formspreeResponse.text());
-                    }
-                } catch (formspreeError) {
-                    console.error('Formspree failed:', formspreeError);
-                }
-
-                if (workerSuccess || formspreeSuccess) {
-                    // Mostrar instrucciones de pago inmediatamente después de éxito
-                    showPaymentInstructions(paymentMethod, total);
-                } else {
-                    throw new Error('Ambos envíos fallaron');
-                }
-
-            } catch (error) {
-                console.error('Error processing payment:', error);
-                document.getElementById('errorMessage').textContent = `Error al procesar el pedido: ${error.message}. Por favor intenta de nuevo o contáctanos.`;
-                document.getElementById('errorMessage').style.display = 'block';
-                document.getElementById('loadingSpinner').style.display = 'none';
-            }
-        }
-
-        function showPaymentInstructions(paymentMethod, total) {
-            document.getElementById('loadingSpinner').style.display = 'none';
-            document.getElementById('checkoutFormSection').style.display = 'none';
-            
-            if (paymentMethod === 'COP') {
-                document.getElementById('copTotalAmount').textContent = `$${total.toLocaleString()}`;
-                document.getElementById('copOrderNumber').textContent = currentOrderId;
-                document.getElementById('copPaymentSection').style.display = 'block';
-            } else {
-                document.getElementById('bitcoinTotalAmount').textContent = `$${total.toLocaleString()}`;
-                document.getElementById('bitcoinOrderNumber').textContent = currentOrderId;
-                document.getElementById('bitcoinPaymentSection').style.display = 'block';
-                
-                document.getElementById('qrCode').innerHTML = '';
-                new QRCode(document.getElementById('qrCode'), {
-                    text: `bitcoin:${BITCOIN_ADDRESS}?amount=${total}&message=Pedido ${currentOrderId}`,
-                    width: 200,
-                    height: 200
-                });
-            }
-        }
-
-        // Completar pedido
-        function completeOrder() {
-            document.getElementById('copPaymentSection').style.display = 'none';
-            document.getElementById('bitcoinPaymentSection').style.display = 'none';
-            document.getElementById('confirmedOrderNumber').textContent = currentOrderId;
-            document.getElementById('successMessage').style.display = 'block';
-            
-            setTimeout(() => {
-                cart = {};
-                updateCartCounter();
-                renderProducts();
-                bootstrap.Modal.getInstance(document.getElementById('orderModal')).hide();
-            }, 5000);
         }
     </script>
 </body>
